@@ -30,7 +30,7 @@ class AmazonKerasClassifier:
         self.classifier = Sequential()
 
     def add_conv_layer(self, img_size=(32, 32), img_channels=3):
-        self.classifier.add(ZeroPadding2D((1,1),input_shape=(3,None,None)))
+		self.classifier.add(ZeroPadding2D((1,1),input_shape=(3,None,None)))
 		self.classifier.add(Conv2D(64, 3, 3, activation='relu'))
 		self.classifier.add(ZeroPadding2D((1,1)))
 		self.classifier.add(Conv2D(64, 3, 3, activation='relu'))
