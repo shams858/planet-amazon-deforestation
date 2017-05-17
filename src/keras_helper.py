@@ -11,7 +11,7 @@ from tensorflow.contrib.keras.api.keras.layers import Conv2D, MaxPooling2D, Batc
 from tensorflow.contrib.keras.api.keras.optimizers import Adam
 from tensorflow.contrib.keras.api.keras.callbacks import Callback
 from tensorflow.contrib.keras import backend
-from keras.optimizers import SGD
+from tensorflow.contrib.keras.optimizers import SGD
 
 
 class LossHistory(Callback):
