@@ -11,6 +11,7 @@ from tensorflow.contrib.keras.api.keras.layers import Conv2D, MaxPooling2D, Batc
 from tensorflow.contrib.keras.api.keras.optimizers import Adam
 from tensorflow.contrib.keras.api.keras.callbacks import Callback
 from tensorflow.contrib.keras import backend
+from tensorflow.contrib.keras.layers.convolutional import UpSampling2D
 
 
 class LossHistory(Callback):
@@ -37,12 +38,10 @@ class AmazonKerasClassifier:
         self.classifier.add(Conv2D(64, (3, 3), activation='relu'))
         self.classifier.add(MaxPooling2D(pool_size=(2, 2)))
         self.classifier.add(Dropout(0.25))
-        self.classifier.add(Conv2D(32, (3, 3), activation='relu'))
-        self.classifier.add(MaxPooling2D(pool_size=(2, 2)))
-        self.classifier.add(Dropout(0.25))
         self.classifier.add(Conv2D(16, (2, 2), activation='relu'))
         self.classifier.add(MaxPooling2D(pool_size=(2, 2)))
         self.classifier.add(Dropout(0.25))
+        self.classifier.add(UpSampling2D(size=(2, 2)))
 
     def add_flatten_layer(self):
         self.classifier.add(Flatten())
