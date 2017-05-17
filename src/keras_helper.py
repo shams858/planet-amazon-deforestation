@@ -30,17 +30,17 @@ class AmazonKerasClassifier:
         self.classifier = Sequential()
 
     def add_conv_layer(self, img_size=(32, 32), img_channels=3):
-        self.classifier.add(ZeroPadding2D((1,1),input_shape=(3,64,64)))
+        self.classifier.add(BatchNormalization(input_shape=(*img_size, img_channels)))
         self.classifier.add(Conv2D(64, (3, 3), activation='relu'))
         self.classifier.add(ZeroPadding2D((1,1)))
         self.classifier.add(Conv2D(64, (3, 3), activation='relu'))
-        self.classifier.add(MaxPooling2D((2,2), dim_ordering="th", strides=(2,2)))
+        self.classifier.add(MaxPooling2D((2,2), strides=(2,2)))
 
         self.classifier.add(ZeroPadding2D((1,1)))
         self.classifier.add(Conv2D(128, (3, 3), activation='relu'))
         self.classifier.add(ZeroPadding2D((1,1)))
         self.classifier.add(Conv2D(128, (3, 3), activation='relu'))
-        self.classifier.add(MaxPooling2D((2,2), dim_ordering="th", strides=(2,2)))
+        self.classifier.add(MaxPooling2D((2,2), strides=(2,2)))
 
         self.classifier.add(ZeroPadding2D((1,1)))
         self.classifier.add(Conv2D(256, (3, 3), activation='relu'))
@@ -48,7 +48,7 @@ class AmazonKerasClassifier:
         self.classifier.add(Conv2D(256, (3, 3), activation='relu'))
         self.classifier.add(ZeroPadding2D((1,1)))
         self.classifier.add(Conv2D(256, (3, 3), activation='relu'))
-        self.classifier.add(MaxPooling2D((2,2), dim_ordering="th", strides=(2,2)))
+        self.classifier.add(MaxPooling2D((2,2), strides=(2,2)))
 
         self.classifier.add(ZeroPadding2D((1,1)))
         self.classifier.add(Conv2D(512, (3, 3), activation='relu'))
@@ -56,7 +56,7 @@ class AmazonKerasClassifier:
         self.classifier.add(Conv2D(512, (3, 3), activation='relu'))
         self.classifier.add(ZeroPadding2D((1,1)))
         self.classifier.add(Conv2D(512, (3, 3), activation='relu'))
-        self.classifier.add(MaxPooling2D((2,2), dim_ordering="th", strides=(2,2)))
+        self.classifier.add(MaxPooling2D((2,2), strides=(2,2)))
 
         self.classifier.add(ZeroPadding2D((1,1)))
         self.classifier.add(Conv2D(512, (3, 3), activation='relu'))
@@ -64,7 +64,7 @@ class AmazonKerasClassifier:
         self.classifier.add(Conv2D(512, (3, 3), activation='relu'))
         self.classifier.add(ZeroPadding2D((1,1)))
         self.classifier.add(Conv2D(512, (3, 3), activation='relu'))
-        self.classifier.add(MaxPooling2D((2,2), dim_ordering="th", strides=(2,2)))
+        self.classifier.add(MaxPooling2D((2,2), strides=(2,2)))
 
     def add_flatten_layer(self):
         self.classifier.add(Flatten())
