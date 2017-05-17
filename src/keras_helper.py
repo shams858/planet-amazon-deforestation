@@ -57,14 +57,7 @@ class AmazonKerasClassifier:
         self.classifier.add(ZeroPadding2D((1,1)))
         self.classifier.add(Conv2D(512, (3, 3), activation='relu'))
         self.classifier.add(MaxPooling2D((2,2), strides=(2,2)))
-
-        self.classifier.add(ZeroPadding2D((1,1)))
-        self.classifier.add(Conv2D(512, (3, 3), activation='relu'))
-        self.classifier.add(ZeroPadding2D((1,1)))
-        self.classifier.add(Conv2D(512, (3, 3), activation='relu'))
-        self.classifier.add(ZeroPadding2D((1,1)))
-        self.classifier.add(Conv2D(512, (3, 3), activation='relu'))
-        self.classifier.add(MaxPooling2D((2,2), strides=(2,2)))
+        
 
     def add_flatten_layer(self):
         self.classifier.add(Flatten())
