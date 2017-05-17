@@ -37,7 +37,7 @@ class AmazonKerasClassifier:
         self.classifier.add(Conv2D(64, (3, 3), activation='relu'))
         self.classifier.add(MaxPooling2D(pool_size=(2, 2)))
         self.classifier.add(Dropout(0.25))
-		"""
+        """
         self.classifier.add(Conv2D(32, (3, 3), activation='relu'))
         self.classifier.add(MaxPooling2D(pool_size=(2, 2)))
         self.classifier.add(Dropout(0.25))
