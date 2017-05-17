@@ -8,10 +8,9 @@ import tensorflow.contrib.keras.api.keras as k
 from tensorflow.contrib.keras.api.keras.models import Sequential
 from tensorflow.contrib.keras.api.keras.layers import Dense, Dropout, Flatten
 from tensorflow.contrib.keras.api.keras.layers import Conv2D, MaxPooling2D, BatchNormalization, ZeroPadding2D
-from tensorflow.contrib.keras.api.keras.optimizers import Adam
+from tensorflow.contrib.keras.api.keras.optimizers import Adam, SGD
 from tensorflow.contrib.keras.api.keras.callbacks import Callback
 from tensorflow.contrib.keras import backend
-from tensorflow.contrib.keras.optimizers import SGD
 
 
 class LossHistory(Callback):
