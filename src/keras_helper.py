@@ -7,8 +7,8 @@ from sklearn.model_selection import train_test_split
 import tensorflow.contrib.keras.api.keras as k
 from tensorflow.contrib.keras.api.keras.models import Sequential
 from tensorflow.contrib.keras.api.keras.layers import Dense, Dropout, Flatten
-from tensorflow.contrib.keras.api.keras.layers import Conv2D, MaxPooling2D, BatchNormalization, ZeroPadding2D
-from tensorflow.contrib.keras.api.keras.optimizers import Adam, SGD
+from tensorflow.contrib.keras.api.keras.layers import Conv2D, MaxPooling2D, BatchNormalization
+from tensorflow.contrib.keras.api.keras.optimizers import Adam
 from tensorflow.contrib.keras.api.keras.callbacks import Callback
 from tensorflow.contrib.keras import backend
 
@@ -31,50 +31,30 @@ class AmazonKerasClassifier:
 
     def add_conv_layer(self, img_size=(32, 32), img_channels=3):
         self.classifier.add(BatchNormalization(input_shape=(*img_size, img_channels)))
+        self.classifier.add(Conv2D(32, (3, 3), activation='relu'))
+        self.classifier.add(MaxPooling2D(pool_size=(2, 2)))
+        self.classifier.add(Dropout(0.25))
         self.classifier.add(Conv2D(64, (3, 3), activation='relu'))
-        self.classifier.add(ZeroPadding2D((1,1)))
-        self.classifier.add(Conv2D(64, (3, 3), activation='relu'))
-        self.classifier.add(MaxPooling2D((2,2), strides=(2,2)))
-
-        self.classifier.add(ZeroPadding2D((1,1)))
-        self.classifier.add(Conv2D(128, (3, 3), activation='relu'))
-        self.classifier.add(ZeroPadding2D((1,1)))
-        self.classifier.add(Conv2D(128, (3, 3), activation='relu'))
-        self.classifier.add(MaxPooling2D((2,2), strides=(2,2)))
-
-        self.classifier.add(ZeroPadding2D((1,1)))
-        self.classifier.add(Conv2D(256, (3, 3), activation='relu'))
-        self.classifier.add(ZeroPadding2D((1,1)))
-        self.classifier.add(Conv2D(256, (3, 3), activation='relu'))
-        self.classifier.add(ZeroPadding2D((1,1)))
-        self.classifier.add(Conv2D(256, (3, 3), activation='relu'))
-        self.classifier.add(MaxPooling2D((2,2), strides=(2,2)))
-
-        self.classifier.add(ZeroPadding2D((1,1)))
-        self.classifier.add(Conv2D(512, (3, 3), activation='relu'))
-        self.classifier.add(ZeroPadding2D((1,1)))
-        self.classifier.add(Conv2D(512, (3, 3), activation='relu'))
-        self.classifier.add(ZeroPadding2D((1,1)))
-        self.classifier.add(Conv2D(512, (3, 3), activation='relu'))
-        self.classifier.add(MaxPooling2D((2,2), strides=(2,2)))
-
-        self.classifier.add(ZeroPadding2D((1,1)))
-        self.classifier.add(Conv2D(512, (3, 3), activation='relu'))
-        self.classifier.add(ZeroPadding2D((1,1)))
-        self.classifier.add(Conv2D(512, (3, 3), activation='relu'))
-        self.classifier.add(ZeroPadding2D((1,1)))
-        self.classifier.add(Conv2D(512, (3, 3), activation='relu'))
-        self.classifier.add(MaxPooling2D((2,2), strides=(2,2)))
+        self.classifier.add(MaxPooling2D(pool_size=(2, 2)))
+        self.classifier.add(Dropout(0.25))
+		self.classifier.add(Conv2D(32, (3, 3), activation='relu'))
+        self.classifier.add(MaxPooling2D(pool_size=(2, 2)))
+        self.classifier.add(Dropout(0.25))
+        self.classifier.add(Conv2D(16, (2, 2), activation='relu'))
+        self.classifier.add(MaxPooling2D(pool_size=(2, 2)))
+        self.classifier.add(Dropout(0.25))
 
     def add_flatten_layer(self):
         self.classifier.add(Flatten())
 
     def add_ann_layer(self, output_size):
-        self.classifier.add(Dense(4096, activation='relu'))
-        self.classifier.add(Dropout(0.5))
-        self.classifier.add(Dense(4096, activation='relu'))
-        self.classifier.add(Dropout(0.5))
-        self.classifier.add(Dense(output_size, activation='softmax'))
+        self.classifier.add(Dense(256, activation='relu'))
+        self.classifier.add(Dropout(0.25))
+        self.classifier.add(Dense(128, activation='relu'))
+        self.classifier.add(Dropout(0.25))
+		self.classifier.add(Dense(64, activation='sigmoid'))
+        self.classifier.add(Dropout(0.25))
+        self.classifier.add(Dense(output_size, activation='sigmoid'))
 
     def _get_fbeta_score(self, classifier, X_valid, y_valid):
         p_valid = classifier.predict(X_valid)
@@ -85,8 +65,7 @@ class AmazonKerasClassifier:
 
         X_train, X_valid, y_train, y_valid = train_test_split(x_train, y_train,
                                                               test_size=validation_split_size)
-        sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
-        self.classifier.compile(loss='categorical_crossentropy',optimizer=sgd)
+        self.classifier.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
         self.classifier.fit(X_train, y_train,
                             batch_size=batch_size,
