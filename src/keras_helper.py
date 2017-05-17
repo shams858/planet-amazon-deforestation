@@ -37,11 +37,9 @@ class AmazonKerasClassifier:
         self.classifier.add(Conv2D(64, (3, 3), activation='relu'))
         self.classifier.add(MaxPooling2D(pool_size=(2, 2)))
         self.classifier.add(Dropout(0.25))
-        """
         self.classifier.add(Conv2D(32, (3, 3), activation='relu'))
         self.classifier.add(MaxPooling2D(pool_size=(2, 2)))
         self.classifier.add(Dropout(0.25))
-        """
         self.classifier.add(Conv2D(16, (2, 2), activation='relu'))
         self.classifier.add(MaxPooling2D(pool_size=(2, 2)))
         self.classifier.add(Dropout(0.25))
@@ -54,8 +52,10 @@ class AmazonKerasClassifier:
         self.classifier.add(Dropout(0.25))
         self.classifier.add(Dense(128, activation='relu'))
         self.classifier.add(Dropout(0.25))
+        """
         self.classifier.add(Dense(64, activation='sigmoid'))
         self.classifier.add(Dropout(0.25))
+        """
         self.classifier.add(Dense(output_size, activation='sigmoid'))
 
     def _get_fbeta_score(self, classifier, X_valid, y_valid):
