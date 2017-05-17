@@ -52,7 +52,7 @@ class AmazonKerasClassifier:
         self.classifier.add(Dropout(0.25))
         self.classifier.add(Dense(128, activation='relu'))
         self.classifier.add(Dropout(0.25))
-		self.classifier.add(Dense(64, activation='sigmoid'))
+        self.classifier.add(Dense(64, activation='sigmoid'))
         self.classifier.add(Dropout(0.25))
         self.classifier.add(Dense(output_size, activation='sigmoid'))
 
