@@ -86,7 +86,7 @@ class AmazonKerasClassifier:
         X_train, X_valid, y_train, y_valid = train_test_split(x_train, y_train,
                                                               test_size=validation_split_size)
         sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
-        self.classifier.compile(loss='categorical_crossentropy',optimizer=sgd,metrics=['accuracy'])
+        self.classifier.compile(loss='categorical_crossentropy',optimizer=sgd)
 
         self.classifier.fit(X_train, y_train,
                             batch_size=batch_size,
