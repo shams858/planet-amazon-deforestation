@@ -68,7 +68,7 @@ class AmazonKerasClassifier:
 
         X_train, X_valid, y_train, y_valid = train_test_split(x_train, y_train,
                                                               test_size=validation_split_size)
-        opt = Adam(lr=0.0001)
+        opt = Adam(lr=0.002)
         self.classifier.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy'])
 		
         datagen = ImageDataGenerator(
