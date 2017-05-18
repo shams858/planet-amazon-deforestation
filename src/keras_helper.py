@@ -12,6 +12,7 @@ from tensorflow.contrib.keras.api.keras.optimizers import Adam
 from tensorflow.contrib.keras.api.keras.callbacks import Callback
 from tensorflow.contrib.keras import backend
 from tensorflow.contrib.keras.python.keras.layers.convolutional import UpSampling2D
+from tensorflow.contrib.keras.python.keras.preprocessing.image import ImageDataGenerator
 
 
 class LossHistory(Callback):
