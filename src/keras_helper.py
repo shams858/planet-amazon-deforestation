@@ -69,7 +69,7 @@ class AmazonKerasClassifier:
         X_train, X_valid, y_train, y_valid = train_test_split(x_train, y_train,
                                                               test_size=validation_split_size)
         opt = keras.optimizers.Adam(lr=0.0001)
-		self.classifier.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy'])
+        self.classifier.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy'])
 		
         datagen = ImageDataGenerator(
         featurewise_center=False,  # set input mean to 0 over the dataset
