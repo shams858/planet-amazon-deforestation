@@ -42,8 +42,8 @@ class AmazonKerasClassifier:
         self.classifier.add(MaxPooling2D(pool_size=(2, 2)))
         self.classifier.add(Dropout(0.25))
         self.classifier.add(UpSampling2D(size=(4, 4)))
-        self.classifier.add(Conv2D(96, (3, 3), activation='relu'))
-        
+        self.classifier.add(Conv2D(128, (3, 3), activation='relu'))
+        #self.classifier.add(MaxPooling2D(pool_size=(2, 2)))
 
     def add_flatten_layer(self):
         self.classifier.add(Flatten())
