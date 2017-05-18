@@ -95,7 +95,7 @@ class AmazonKerasClassifier:
                             validation_data=(X_valid, y_valid),
                             callbacks=[history, *train_callbacks])
         """
-		fbeta_score = self._get_fbeta_score(self.classifier, X_valid, y_valid)
+        fbeta_score = self._get_fbeta_score(self.classifier, X_valid, y_valid)
         return [history.train_losses, history.val_losses, fbeta_score]
 
     def predict(self, x_test):
