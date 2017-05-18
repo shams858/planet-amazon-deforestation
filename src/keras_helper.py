@@ -84,6 +84,8 @@ class AmazonKerasClassifier:
         vertical_flip=False)  # randomly flip images
 
         datagen.fit(X_train)
+        print ('X_train.shape[0]')
+        print(X_train.shape[0])
 
         self.classifier.fit_generator(datagen.flow(X_train, y_train, batch_size=batch_size),
                         steps_per_epoch=X_train.shape[0] // batch_size,
