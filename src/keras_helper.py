@@ -69,7 +69,7 @@ class AmazonKerasClassifier:
         X_train, X_valid, y_train, y_valid = train_test_split(x_train, y_train,
                                                               test_size=validation_split_size)
         adam = Adam(lr=0.0005, decay=1e-6)
-		rms = RMSprop(lr=0.0001, decay=1e-6)
+        rms = RMSprop(lr=0.0001, decay=1e-6)
         self.classifier.compile(loss='binary_crossentropy', optimizer=adam, metrics=['accuracy'])
 		
         datagen = ImageDataGenerator(
