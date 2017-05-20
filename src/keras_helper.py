@@ -51,13 +51,13 @@ class AmazonKerasClassifier:
     def add_ann_layer(self, output_size):
         self.classifier.add(Dense(256, activation='relu'))
         self.classifier.add(Dropout(0.25))
-        self.classifier.add(Dense(128, activation='sigmoid'))
+        self.classifier.add(Dense(512, activation='sigmoid'))
         self.classifier.add(Dropout(0.25))
         """
         self.classifier.add(Dense(64, activation='sigmoid'))
         self.classifier.add(Dropout(0.25))
         """
-        self.classifier.add(Dense(output_size, activation='softmax'))
+        self.classifier.add(Dense(output_size, activation='sigmoid'))
 
     def _get_fbeta_score(self, classifier, X_valid, y_valid):
         p_valid = classifier.predict(X_valid)
@@ -70,7 +70,7 @@ class AmazonKerasClassifier:
                                                               test_size=validation_split_size)
         adam = Adam(lr=0.0005, decay=1e-6)
         rms = RMSprop(lr=0.0001, decay=1e-6)
-        self.classifier.compile(loss='categorical_crossentropy', optimizer=adam, metrics=['accuracy'])
+        self.classifier.compile(loss='binary_crossentropy', optimizer=adam, metrics=['accuracy'])
 		
         datagen = ImageDataGenerator(
         featurewise_center=False,  # set input mean to 0 over the dataset
