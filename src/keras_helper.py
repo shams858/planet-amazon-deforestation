@@ -70,9 +70,10 @@ class AmazonKerasClassifier:
                                                               test_size=validation_split_size)
         adam = Adam(lr=0.0005, decay=1e-6)
         rms = RMSprop(lr=0.0001, decay=1e-6)
-        self.classifier.compile(loss='binary_crossentropy', optimizer=adam, metrics=['accuracy'])
+        self.classifier.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 		
-        datagen = ImageDataGenerator(
+        """        
+		datagen = ImageDataGenerator(
         featurewise_center=False,  # set input mean to 0 over the dataset
         samplewise_center=False,  # set each sample mean to 0
         featurewise_std_normalization=False,  # divide inputs by std of the dataset
@@ -87,9 +88,11 @@ class AmazonKerasClassifier:
         datagen.fit(X_train)
         print ('X_train.shape[0]')
         print(X_train.shape[0])
+        """
 		
         earlyStopping = EarlyStopping(monitor='val_loss', patience=2, verbose=0, mode='auto')
 
+        """
         self.classifier.fit_generator(datagen.flow(X_train, y_train, batch_size=batch_size),
                         steps_per_epoch=X_train.shape[0] // batch_size,
                         epochs=epoch,
@@ -101,7 +104,6 @@ class AmazonKerasClassifier:
                             verbose=1,
                             validation_data=(X_valid, y_valid),
                             callbacks=[history, *train_callbacks])
-        """
         fbeta_score = self._get_fbeta_score(self.classifier, X_valid, y_valid)
         return [history.train_losses, history.val_losses, fbeta_score]
 
