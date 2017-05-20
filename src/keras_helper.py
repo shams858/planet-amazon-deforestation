@@ -88,7 +88,7 @@ class AmazonKerasClassifier:
         print ('X_train.shape[0]')
         print(X_train.shape[0])
 		
-		earlyStopping = EarlyStopping(monitor='val_loss', patience=2, verbose=0, mode='auto')
+        earlyStopping = EarlyStopping(monitor='val_loss', patience=2, verbose=0, mode='auto')
 
         self.classifier.fit_generator(datagen.flow(X_train, y_train, batch_size=batch_size),
                         steps_per_epoch=X_train.shape[0] // batch_size,
