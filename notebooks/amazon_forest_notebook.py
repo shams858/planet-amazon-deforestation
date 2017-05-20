@@ -135,6 +135,11 @@ print("y_train shape: {}".format(y_train.shape))
 y_map
 
 
+from keras.callbacks import ModelCheckpoint
+
+filepath="weights.best.hdf5"
+checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
+
 # ## Create the neural network definition
 
 # In[11]:
@@ -145,6 +150,9 @@ classifier.add_flatten_layer()
 classifier.add_ann_layer(len(y_map))
 train_losses, val_losses, fbeta_score = classifier.train_model(x_train, y_train, epochs, batch_size, validation_split_size=validation_split_size)
 
+
+classifier.load_weights("weights.best.hdf5")
+print("Weights loaded")
 
 # ## Monitor the results
 
