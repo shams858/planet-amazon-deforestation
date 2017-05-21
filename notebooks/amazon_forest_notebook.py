@@ -151,7 +151,7 @@ classifier.add_ann_layer(len(y_map))
 train_losses, val_losses, fbeta_score = classifier.train_model(x_train, y_train, epochs, batch_size, validation_split_size=validation_split_size)
 
 
-classifier.load_model("weights.best.hdf5")
+classifier = load_model("weights.best.hdf5")
 print("Weights loaded")
 
 # ## Monitor the results
