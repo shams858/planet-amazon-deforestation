@@ -210,7 +210,7 @@ print("Predictions shape: {}\nFiles name shape: {}\n1st predictions entry:\n{}".
 # In[16]:
 
 # For now we'll just put all thresholds to 0.2 
-thresholds = [0.2] * len(labels_set)
+thresholds = [0.25] * len(labels_set)
 
 # TODO complete
 tags_pred = np.array(predictions).T
