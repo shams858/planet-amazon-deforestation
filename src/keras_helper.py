@@ -73,7 +73,7 @@ class AmazonKerasClassifier:
         self.classifier.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 		
                 
-		datagen = ImageDataGenerator(
+        datagen = ImageDataGenerator(
         featurewise_center=False,  # set input mean to 0 over the dataset
         samplewise_center=False,  # set each sample mean to 0
         featurewise_std_normalization=False,  # divide inputs by std of the dataset
