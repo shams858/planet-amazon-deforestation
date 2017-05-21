@@ -169,6 +169,7 @@ train_losses, val_losses, fbeta_score = classifier.train_model(x_train, y_train,
 
 # In[13]:
 
+print ('fbeta_score')
 fbeta_score
 
 
