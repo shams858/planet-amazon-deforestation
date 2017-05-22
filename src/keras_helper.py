@@ -28,9 +28,9 @@ class LossHistory(Callback):
 
 
 class AmazonKerasClassifier:
-    def __init__(self):
+    def __init__(self, img_size=(32, 32), img_channels=3):
         self.losses = []
-        self.classifier = InceptionV3(weights='imagenet', include_top=True)
+        self.classifier = InceptionV3(weights='imagenet', include_top=True, input_shape=(*img_size, img_channels))
 
     def add_conv_layer(self, img_size=(32, 32), img_channels=3):
         self.classifier.add(BatchNormalization(input_shape=(*img_size, img_channels)))
