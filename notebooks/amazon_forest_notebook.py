@@ -102,7 +102,7 @@ for i, (image_name, label) in enumerate(zip(images_title, labels_set)):
 
 # In[8]:
 
-img_resize = (64, 64) # The resize size of each image
+img_resize = (140, 140) # The resize size of each image
 validation_split_size = 0.2
 epochs = 20
 batch_size = 128
@@ -147,7 +147,7 @@ print("y_train: {}".format(y_train[1:]))
 
 # In[11]:
 
-classifier = AmazonKerasClassifier()
+classifier = AmazonKerasClassifier(img_resize)
 #classifier.add_conv_layer(img_resize)
 #classifier.add_flatten_layer()
 classifier.add_ann_layer(len(y_map))
