@@ -102,7 +102,7 @@ for i, (image_name, label) in enumerate(zip(images_title, labels_set)):
 
 # In[8]:
 
-img_resize = (32, 32) # The resize size of each image
+img_resize = (64, 64) # The resize size of each image
 validation_split_size = 0.2
 epochs = 20
 batch_size = 128
@@ -173,7 +173,7 @@ train_losses, val_losses, fbeta_score = classifier.train_model(x_train, y_train,
 # In[13]:
 
 print ('fbeta_score')
-fbeta_score
+print(fbeta_score)
 
 
 # Before launching our predictions lets preprocess the test data and delete the old training data matrices

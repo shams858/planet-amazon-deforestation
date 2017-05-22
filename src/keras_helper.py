@@ -65,7 +65,7 @@ class AmazonKerasClassifier:
                                                               test_size=validation_split_size)
         adam = Adam(lr=0.0005, decay=1e-6)
         rms = RMSprop(lr=0.0001, decay=1e-6)
-        self.classifier.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+        self.classifier.compile(loss='binary_crossentropy', optimizer=adam, metrics=['accuracy'])
 		
                 
         datagen = ImageDataGenerator(
@@ -102,6 +102,7 @@ class AmazonKerasClassifier:
         """
         
         fbeta_score = self._get_fbeta_score(self.classifier, X_valid, y_valid)
+		print(fbeta_score)
         return [history.train_losses, history.val_losses, fbeta_score]
 
     def predict(self, x_test):
