@@ -52,7 +52,7 @@ class AmazonKerasClassifier:
         self.classifier.add(Dense(256, activation='relu'))
         self.classifier.add(Dropout(0.25))
         self.classifier.add(Dense(512, activation='relu'))
-        self.classifier.add(Dropout(0.25))
+        self.classifier.add(Dropout(0.25))	
         self.classifier.add(Dense(output_size, activation='sigmoid'))
 
     def _get_fbeta_score(self, classifier, X_valid, y_valid):
@@ -70,10 +70,10 @@ class AmazonKerasClassifier:
 		
                 
         datagen = ImageDataGenerator(
-        featurewise_center=False,  # set input mean to 0 over the dataset
-        samplewise_center=False,  # set each sample mean to 0
-        featurewise_std_normalization=False,  # divide inputs by std of the dataset
-        samplewise_std_normalization=False,  # divide each input by its std
+        featurewise_center=True,  # set input mean to 0 over the dataset
+        samplewise_center=True,  # set each sample mean to 0
+        featurewise_std_normalization=True,  # divide inputs by std of the dataset
+        samplewise_std_normalization=True,  # divide each input by its std
         zca_whitening=False,  # apply ZCA whitening
         rotation_range=0,  # randomly rotate images in the range (degrees, 0 to 180)
         width_shift_range=0.1,  # randomly shift images horizontally (fraction of total width)
