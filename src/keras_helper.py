@@ -9,7 +9,7 @@ from tensorflow.contrib.keras.api.keras.models import Sequential
 from tensorflow.contrib.keras.api.keras.layers import Dense, Dropout, Flatten, GlobalAveragePooling2D
 from tensorflow.contrib.keras.api.keras.layers import Conv2D, MaxPooling2D, BatchNormalization
 from tensorflow.contrib.keras.api.keras.optimizers import Adam, Adamax, RMSprop
-from tensorflow.contrib.keras.api.keras.callbacks import Callback, EarlyStopping
+from tensorflow.contrib.keras.api.keras.callbacks import Callback, EarlyStopping, ModelCheckpoint
 from tensorflow.contrib.keras import backend
 from tensorflow.contrib.keras.python.keras.layers.convolutional import UpSampling2D
 from tensorflow.contrib.keras.python.keras.preprocessing.image import ImageDataGenerator
@@ -36,9 +36,7 @@ class AmazonKerasClassifier:
         x = GlobalAveragePooling2D()(x)
         x = Dense(1024, activation='relu')(x)
         predictions = Dense(17, activation='sigmoid')(x)
-        self.classifier = Model(inputs=base_model.input, outputs=predictions)  
-        for layer in base_model.layers:
-           layer.trainable = False
+        self.classifier = Model(inputs=base_model.input, outputs=predictions)
 
     def add_conv_layer(self, img_size=(32, 32), img_channels=3):
         self.classifier.add(BatchNormalization(input_shape=(*img_size, img_channels)))
@@ -72,13 +70,13 @@ class AmazonKerasClassifier:
         X_train, X_valid, y_train, y_valid = train_test_split(x_train, y_train,
                                                               test_size=validation_split_size)
         self.classifier.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-              
+        checkpointer = ModelCheckpoint(filepath="weights.best.hdf5", verbose=1, save_best_only=True)
         self.classifier.fit(X_train, y_train,
                             batch_size=batch_size,
                             epochs=epoch,
                             verbose=1,
                             validation_data=(X_valid, y_valid),
-                            callbacks=[history, *train_callbacks])        
+                            callbacks=[history, *train_callbacks, checkpointer])        
         fbeta_score = self._get_fbeta_score(self.classifier, X_valid, y_valid)
         print(fbeta_score)
         return [history.train_losses, history.val_losses, fbeta_score]

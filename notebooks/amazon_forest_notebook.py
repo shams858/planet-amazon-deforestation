@@ -32,6 +32,7 @@ import pandas as pd
 import seaborn as sns
 import tensorflow as tf
 import matplotlib.pyplot as plt
+from tensorflow.contrib.keras.api.keras.models import load_model
 
 import data_helper
 from keras_helper import AmazonKerasClassifier
@@ -151,8 +152,8 @@ classifier = AmazonKerasClassifier(img_resize)
 train_losses, val_losses, fbeta_score = classifier.train_model(x_train, y_train, epochs, batch_size, validation_split_size=validation_split_size)
 
 
-#classifier.load_model("weights.best.hdf5")
-#print("Weights loaded")
+classifier = load_model("weights.best.hdf5")
+print("Weights loaded")
 
 # ## Monitor the results
 
