@@ -70,13 +70,25 @@ class AmazonKerasClassifier:
         X_train, X_valid, y_train, y_valid = train_test_split(x_train, y_train,
                                                               test_size=validation_split_size)
         self.classifier.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-              
-        self.classifier.fit(X_train, y_train,
-                            batch_size=batch_size,
-                            epochs=epoch,
-                            verbose=1,
-                            validation_data=(X_valid, y_valid),
-                            callbacks=[history, *train_callbacks])        
+		
+        datagen = ImageDataGenerator(
+        featurewise_center=False,  # set input mean to 0 over the dataset
+        samplewise_center=False,  # set each sample mean to 0
+        featurewise_std_normalization=False,  # divide inputs by std of the dataset
+        samplewise_std_normalization=False,  # divide each input by its std
+        zca_whitening=False,  # apply ZCA whitening
+        rotation_range=0,  # randomly rotate images in the range (degrees, 0 to 180)
+        width_shift_range=0.1,  # randomly shift images horizontally (fraction of total width)
+        height_shift_range=0.1,  # randomly shift images vertically (fraction of total height)
+        horizontal_flip=True,  # randomly flip images
+        vertical_flip=False)  # randomly flip images
+
+        datagen.fit(X_train)
+		
+        self.classifier.fit_generator(datagen.flow(X_train, y_train, batch_size=batch_size),
+                        steps_per_epoch=X_train.shape[0] // batch_size,
+                        epochs=epoch,
+                        validation_data=(X_valid, y_valid))      
         fbeta_score = self._get_fbeta_score(self.classifier, X_valid, y_valid)
         print(fbeta_score)
         return [history.train_losses, history.val_losses, fbeta_score]
