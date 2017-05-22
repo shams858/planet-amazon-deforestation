@@ -30,7 +30,7 @@ class LossHistory(Callback):
 class AmazonKerasClassifier:
     def __init__(self, img_size=(32, 32), img_channels=3):
         self.losses = []
-        base_model = InceptionV3(weights=None)
+        base_model = InceptionV3(weights=None, include_top=False)
         x = base_model.output
         x = GlobalAveragePooling2D()(x)
         x = Dense(1024, activation='relu')(x)
