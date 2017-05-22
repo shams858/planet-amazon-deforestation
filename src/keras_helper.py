@@ -50,11 +50,10 @@ class AmazonKerasClassifier:
         self.classifier.add(Flatten())
 
     def add_ann_layer(self, output_size):
-        self.classifier.add(Dense(256, activation='relu'))
-        self.classifier.add(Dropout(0.25))
-        self.classifier.add(Dense(512, activation='relu'))
-        self.classifier.add(Dropout(0.25))	
-        self.classifier.add(Dense(output_size, activation='sigmoid'))
+        x = self.classifier.output
+        x = GlobalAveragePooling2D()(x)
+        x = Dense(1024, activation='relu')(x)
+        predictions = Dense(output_size, activation='sigmoid')(x)
 
     def _get_fbeta_score(self, classifier, X_valid, y_valid):
         p_valid = classifier.predict(X_valid)
