@@ -132,7 +132,8 @@ gc.collect();
 
 print("x_train shape: {}".format(x_train.shape))
 print("y_train shape: {}".format(y_train.shape))
-y_map
+#y_map
+y_train
 
 
 #from keras.callbacks import ModelCheckpoint
