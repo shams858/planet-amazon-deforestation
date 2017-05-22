@@ -6,13 +6,14 @@ from sklearn.model_selection import train_test_split
 
 import tensorflow.contrib.keras.api.keras as k
 from tensorflow.contrib.keras.api.keras.models import Sequential
-from tensorflow.contrib.keras.api.keras.layers import Dense, Dropout, Flatten
+from tensorflow.contrib.keras.api.keras.layers import Dense, Dropout, Flatten, GlobalAveragePooling2D
 from tensorflow.contrib.keras.api.keras.layers import Conv2D, MaxPooling2D, BatchNormalization
 from tensorflow.contrib.keras.api.keras.optimizers import Adam, Adamax, RMSprop
 from tensorflow.contrib.keras.api.keras.callbacks import Callback, EarlyStopping
 from tensorflow.contrib.keras import backend
 from tensorflow.contrib.keras.python.keras.layers.convolutional import UpSampling2D
 from tensorflow.contrib.keras.python.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.contrib.keras.python.keras.applications.inception_v3 import InceptionV3
 
 
 class LossHistory(Callback):
@@ -29,7 +30,7 @@ class LossHistory(Callback):
 class AmazonKerasClassifier:
     def __init__(self):
         self.losses = []
-        self.classifier = Sequential()
+        self.classifier = InceptionV3(weights='imagenet', include_top=True)
 
     def add_conv_layer(self, img_size=(32, 32), img_channels=3):
         self.classifier.add(BatchNormalization(input_shape=(*img_size, img_channels)))
@@ -70,10 +71,10 @@ class AmazonKerasClassifier:
 		
                 
         datagen = ImageDataGenerator(
-        featurewise_center=True,  # set input mean to 0 over the dataset
-        samplewise_center=True,  # set each sample mean to 0
-        featurewise_std_normalization=True,  # divide inputs by std of the dataset
-        samplewise_std_normalization=True,  # divide each input by its std
+        featurewise_center=False,  # set input mean to 0 over the dataset
+        samplewise_center=False,  # set each sample mean to 0
+        featurewise_std_normalization=False,  # divide inputs by std of the dataset
+        samplewise_std_normalization=False,  # divide each input by its std
         zca_whitening=False,  # apply ZCA whitening
         rotation_range=0,  # randomly rotate images in the range (degrees, 0 to 180)
         width_shift_range=0.1,  # randomly shift images horizontally (fraction of total width)

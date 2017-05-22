@@ -148,7 +148,7 @@ print("y_train: {}".format(y_train[1:]))
 # In[11]:
 
 classifier = AmazonKerasClassifier()
-classifier.add_conv_layer(img_resize)
+#classifier.add_conv_layer(img_resize)
 classifier.add_flatten_layer()
 classifier.add_ann_layer(len(y_map))
 train_losses, val_losses, fbeta_score = classifier.train_model(x_train, y_train, epochs, batch_size, validation_split_size=validation_split_size)
