@@ -132,6 +132,7 @@ gc.collect();
 
 print("x_train shape: {}".format(x_train.shape))
 print("y_train shape: {}".format(y_train.shape))
+print("x_train: {}".format(x_train[1:]))
 print("y_train: {}".format(y_train[1:]))
 #y_map
 
