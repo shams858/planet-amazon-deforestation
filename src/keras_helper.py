@@ -14,6 +14,7 @@ from tensorflow.contrib.keras import backend
 from tensorflow.contrib.keras.python.keras.layers.convolutional import UpSampling2D
 from tensorflow.contrib.keras.python.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.contrib.keras.python.keras.applications.inception_v3 import InceptionV3
+from tensorflow.contrib.keras.python.keras.models import Model
 
 
 class LossHistory(Callback):
