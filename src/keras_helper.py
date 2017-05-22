@@ -28,9 +28,14 @@ class LossHistory(Callback):
 
 
 class AmazonKerasClassifier:
-    def __init__(self):
+    def __init__(self, img_size=(32, 32), img_channels=3):
         self.losses = []
-        self.classifier = Sequential()
+		base_model = InceptionV3(weights=None)
+        x = base_model.output
+        x = GlobalAveragePooling2D()(x)
+        x = Dense(1024, activation='relu')(x)
+        predictions = Dense(17, activation='softmax')(x)
+        self.classifier = Model(inputs=base_model.input, outputs=predictions)
 
     def add_conv_layer(self, img_size=(32, 32), img_channels=3):
         self.classifier.add(BatchNormalization(input_shape=(*img_size, img_channels)))
@@ -64,44 +69,18 @@ class AmazonKerasClassifier:
 
         X_train, X_valid, y_train, y_valid = train_test_split(x_train, y_train,
                                                               test_size=validation_split_size)
-        adam = Adam(lr=0.01, decay=1e-6)
-        rms = RMSprop(lr=0.0001, decay=1e-6)
-        self.classifier.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-		
-                
-        datagen = ImageDataGenerator(
-        featurewise_center=False,  # set input mean to 0 over the dataset
-        samplewise_center=False,  # set each sample mean to 0
-        featurewise_std_normalization=False,  # divide inputs by std of the dataset
-        samplewise_std_normalization=False,  # divide each input by its std
-        zca_whitening=False,  # apply ZCA whitening
-        rotation_range=0,  # randomly rotate images in the range (degrees, 0 to 180)
-        width_shift_range=0.1,  # randomly shift images horizontally (fraction of total width)
-        height_shift_range=0.1,  # randomly shift images vertically (fraction of total height)
-        horizontal_flip=True,  # randomly flip images
-        vertical_flip=False)  # randomly flip images
-
-        datagen.fit(X_train)
-        print ('X_train.shape[0]')
-        print(X_train.shape[0])
-        
-		
-        earlyStopping = EarlyStopping(monitor='val_loss', patience=2, verbose=0, mode='auto')
-
-        
-        self.classifier.fit_generator(datagen.flow(X_train, y_train, batch_size=batch_size),
-                        steps_per_epoch=X_train.shape[0] // batch_size,
-                        epochs=epoch,
-                        validation_data=(X_valid, y_valid))
-        """
+        base_model = InceptionV3(weights=None, include_top=False)
+        x = base_model.output
+        x = GlobalAveragePooling2D()(x)
+        x = Dense(1024, activation='relu')(x)
+        predictions = Dense(17, activation='softmax')(x)
+        self.classifier = Model(inputs=base_model.input, outputs=predictions)        
         self.classifier.fit(X_train, y_train,
                             batch_size=batch_size,
                             epochs=epoch,
                             verbose=1,
                             validation_data=(X_valid, y_valid),
-                            callbacks=[history, *train_callbacks])
-        """
-        
+                            callbacks=[history, *train_callbacks])        
         fbeta_score = self._get_fbeta_score(self.classifier, X_valid, y_valid)
         print(fbeta_score)
         return [history.train_losses, history.val_losses, fbeta_score]

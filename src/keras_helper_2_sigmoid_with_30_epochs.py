@@ -6,11 +6,14 @@ from sklearn.model_selection import train_test_split
 
 import tensorflow.contrib.keras.api.keras as k
 from tensorflow.contrib.keras.api.keras.models import Sequential
-from tensorflow.contrib.keras.api.keras.layers import Dense, Dropout, Flatten
+from tensorflow.contrib.keras.api.keras.layers import Dense, Dropout, Flatten, GlobalAveragePooling2D
 from tensorflow.contrib.keras.api.keras.layers import Conv2D, MaxPooling2D, BatchNormalization
-from tensorflow.contrib.keras.api.keras.optimizers import Adam
-from tensorflow.contrib.keras.api.keras.callbacks import Callback
+from tensorflow.contrib.keras.api.keras.optimizers import Adam, Adamax, RMSprop
+from tensorflow.contrib.keras.api.keras.callbacks import Callback, EarlyStopping
 from tensorflow.contrib.keras import backend
+from tensorflow.contrib.keras.python.keras.layers.convolutional import UpSampling2D
+from tensorflow.contrib.keras.python.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.contrib.keras.python.keras.applications.inception_v3 import InceptionV3
 
 
 class LossHistory(Callback):
@@ -41,13 +44,14 @@ class AmazonKerasClassifier:
         self.classifier.add(MaxPooling2D(pool_size=(2, 2)))
         self.classifier.add(Dropout(0.25))
 
+
     def add_flatten_layer(self):
         self.classifier.add(Flatten())
 
     def add_ann_layer(self, output_size):
         self.classifier.add(Dense(256, activation='relu'))
         self.classifier.add(Dropout(0.25))
-        self.classifier.add(Dense(128, activation='sigmoid'))
+        self.classifier.add(Dense(128, activation='relu'))
         self.classifier.add(Dropout(0.25))
         self.classifier.add(Dense(output_size, activation='sigmoid'))
 
@@ -60,15 +64,46 @@ class AmazonKerasClassifier:
 
         X_train, X_valid, y_train, y_valid = train_test_split(x_train, y_train,
                                                               test_size=validation_split_size)
+        adam = Adam(lr=0.01, decay=1e-6)
+        rms = RMSprop(lr=0.0001, decay=1e-6)
         self.classifier.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+		
+                
+        datagen = ImageDataGenerator(
+        featurewise_center=False,  # set input mean to 0 over the dataset
+        samplewise_center=False,  # set each sample mean to 0
+        featurewise_std_normalization=False,  # divide inputs by std of the dataset
+        samplewise_std_normalization=False,  # divide each input by its std
+        zca_whitening=False,  # apply ZCA whitening
+        rotation_range=0,  # randomly rotate images in the range (degrees, 0 to 180)
+        width_shift_range=0.1,  # randomly shift images horizontally (fraction of total width)
+        height_shift_range=0.1,  # randomly shift images vertically (fraction of total height)
+        horizontal_flip=True,  # randomly flip images
+        vertical_flip=False)  # randomly flip images
 
+        datagen.fit(X_train)
+        print ('X_train.shape[0]')
+        print(X_train.shape[0])
+        
+		
+        earlyStopping = EarlyStopping(monitor='val_loss', patience=2, verbose=0, mode='auto')
+
+        
+        self.classifier.fit_generator(datagen.flow(X_train, y_train, batch_size=batch_size),
+                        steps_per_epoch=X_train.shape[0] // batch_size,
+                        epochs=epoch,
+                        validation_data=(X_valid, y_valid))
+        """
         self.classifier.fit(X_train, y_train,
                             batch_size=batch_size,
                             epochs=epoch,
                             verbose=1,
                             validation_data=(X_valid, y_valid),
                             callbacks=[history, *train_callbacks])
+        """
+        
         fbeta_score = self._get_fbeta_score(self.classifier, X_valid, y_valid)
+        print(fbeta_score)
         return [history.train_losses, history.val_losses, fbeta_score]
 
     def predict(self, x_test):
