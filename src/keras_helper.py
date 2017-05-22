@@ -51,7 +51,7 @@ class AmazonKerasClassifier:
 
     def add_ann_layer(self, output_size):
         x = self.classifier.output
-        x = GlobalAveragePooling2D()(x)
+        #x = GlobalAveragePooling2D()(x)
         x = Dense(1024, activation='relu')(x)
         predictions = Dense(output_size, activation='sigmoid')(x)
 
