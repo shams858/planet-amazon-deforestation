@@ -51,12 +51,8 @@ class AmazonKerasClassifier:
     def add_ann_layer(self, output_size):
         self.classifier.add(Dense(256, activation='relu'))
         self.classifier.add(Dropout(0.25))
-        self.classifier.add(Dense(512, activation='sigmoid'))
+        self.classifier.add(Dense(128, activation='sigmoid'))
         self.classifier.add(Dropout(0.25))
-        """
-        self.classifier.add(Dense(64, activation='sigmoid'))
-        self.classifier.add(Dropout(0.25))
-        """
         self.classifier.add(Dense(output_size, activation='sigmoid'))
 
     def _get_fbeta_score(self, classifier, X_valid, y_valid):

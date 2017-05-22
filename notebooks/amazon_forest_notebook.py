@@ -103,7 +103,7 @@ for i, (image_name, label) in enumerate(zip(images_title, labels_set)):
 # In[8]:
 
 img_resize = (64, 64) # The resize size of each image
-validation_split_size = 0.1
+validation_split_size = 0.2
 epochs = 20
 batch_size = 128
 
@@ -211,7 +211,7 @@ print("Predictions shape: {}\nFiles name shape: {}\n1st predictions entry:\n{}".
 # In[16]:
 
 # For now we'll just put all thresholds to 0.2 
-thresholds = [0.22] * len(labels_set)
+thresholds = [0.2] * len(labels_set)
 
 # TODO complete
 tags_pred = np.array(predictions).T
