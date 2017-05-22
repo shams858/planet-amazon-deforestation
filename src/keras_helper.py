@@ -69,6 +69,7 @@ class AmazonKerasClassifier:
         history = LossHistory()
         X_train, X_valid, y_train, y_valid = train_test_split(x_train, y_train,
                                                               test_size=validation_split_size)
+		self.classifier.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
               
         self.classifier.fit(X_train, y_train,
                             batch_size=batch_size,
