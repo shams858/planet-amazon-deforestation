@@ -102,7 +102,7 @@ for i, (image_name, label) in enumerate(zip(images_title, labels_set)):
 
 # In[8]:
 
-img_resize = (140, 140) # The resize size of each image
+img_resize = (32, 32) # The resize size of each image
 validation_split_size = 0.2
 epochs = 20
 batch_size = 128
@@ -132,8 +132,8 @@ gc.collect();
 
 print("x_train shape: {}".format(x_train.shape))
 print("y_train shape: {}".format(y_train.shape))
-print("x_train: {}".format(x_train[1:]))
-print("y_train: {}".format(y_train[1:]))
+#print("x_train: {}".format(x_train[1:]))
+#print("y_train: {}".format(y_train[1:]))
 #y_map
 
 
@@ -148,8 +148,8 @@ print("y_train: {}".format(y_train[1:]))
 # In[11]:
 
 classifier = AmazonKerasClassifier(img_resize)
-#classifier.add_conv_layer(img_resize)
-#classifier.add_flatten_layer()
+classifier.add_conv_layer(img_resize)
+classifier.add_flatten_layer()
 classifier.add_ann_layer(len(y_map))
 train_losses, val_losses, fbeta_score = classifier.train_model(x_train, y_train, epochs, batch_size, validation_split_size=validation_split_size)
 

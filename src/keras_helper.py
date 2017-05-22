@@ -28,9 +28,9 @@ class LossHistory(Callback):
 
 
 class AmazonKerasClassifier:
-    def __init__(self, img_size=(32, 32), img_channels=3):
+    def __init__(self):
         self.losses = []
-        self.classifier = InceptionV3(weights='imagenet', include_top=False, input_shape=(*img_size, img_channels))
+        self.classifier = Sequential()
 
     def add_conv_layer(self, img_size=(32, 32), img_channels=3):
         self.classifier.add(BatchNormalization(input_shape=(*img_size, img_channels)))
@@ -43,17 +43,16 @@ class AmazonKerasClassifier:
         self.classifier.add(Conv2D(16, (2, 2), activation='relu'))
         self.classifier.add(MaxPooling2D(pool_size=(2, 2)))
         self.classifier.add(Dropout(0.25))
-        #self.classifier.add(UpSampling2D(size=(4, 4)))
-        #self.classifier.add(Conv2D(64, (3, 3), activation='relu'))        
 
     def add_flatten_layer(self):
         self.classifier.add(Flatten())
 
     def add_ann_layer(self, output_size):
-        x = self.classifier.output
-        #x = GlobalAveragePooling2D()(x)
-        x = Dense(1024, activation='relu')(x)
-        predictions = Dense(output_size, activation='sigmoid')(x)
+        self.classifier.add(Dense(256, activation='relu'))
+        self.classifier.add(Dropout(0.25))
+        self.classifier.add(Dense(128, activation='sigmoid'))
+        self.classifier.add(Dropout(0.25))
+        self.classifier.add(Dense(output_size, activation='sigmoid'))
 
     def _get_fbeta_score(self, classifier, X_valid, y_valid):
         p_valid = classifier.predict(X_valid)
