@@ -43,6 +43,7 @@ class AmazonKerasClassifier:
         self.classifier.add(Conv2D(16, (2, 2), activation='relu'))
         self.classifier.add(MaxPooling2D(pool_size=(2, 2)))
         self.classifier.add(Dropout(0.25))
+        self.classifier.add(UpSampling2D(size=(4, 4)))
 
     def add_flatten_layer(self):
         self.classifier.add(Flatten())
@@ -50,7 +51,7 @@ class AmazonKerasClassifier:
     def add_ann_layer(self, output_size):
         self.classifier.add(Dense(256, activation='relu'))
         self.classifier.add(Dropout(0.25))
-        self.classifier.add(Dense(512, activation='relu'))
+        self.classifier.add(Dense(128, activation='relu'))
         self.classifier.add(Dropout(0.25))
         self.classifier.add(Dense(output_size, activation='sigmoid'))
 
