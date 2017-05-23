@@ -105,7 +105,7 @@ for i, (image_name, label) in enumerate(zip(images_title, labels_set)):
 
 img_resize = (140, 140) # The resize size of each image
 validation_split_size = 0.2
-epochs = 40
+epochs = 3
 batch_size = 128
 
 
@@ -152,7 +152,7 @@ classifier = AmazonKerasClassifier(img_resize)
 train_losses, val_losses, fbeta_score = classifier.train_model(x_train, y_train, epochs, batch_size, validation_split_size=validation_split_size)
 
 
-classifier = load_model("weights.best.hdf5")
+classifier.load_weights("weights.best.hdf5")
 print("Weights loaded")
 
 # ## Monitor the results
