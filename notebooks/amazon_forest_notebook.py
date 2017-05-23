@@ -152,7 +152,7 @@ classifier = AmazonKerasClassifier(img_resize)
 train_losses, val_losses, fbeta_score = classifier.train_model(x_train, y_train, epochs, batch_size, validation_split_size=validation_split_size)
 
 
-classifier.load_weights("weights.best.hdf5")
+classifier.load_weight()
 print("Weights loaded")
 
 # ## Monitor the results
