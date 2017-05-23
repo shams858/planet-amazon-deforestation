@@ -58,9 +58,9 @@ class AmazonKerasClassifier:
 
     def _get_fbeta_score(self, classifier, X_valid, y_valid):
         p_valid = classifier.predict(X_valid)
-		print ('p_valid')
-		print(p_valid.shape)
-		print(p_valid)
+        print ('p_valid')
+        print(p_valid.shape)
+        print(p_valid)
         return fbeta_score(y_valid, np.array(p_valid) > 0.2, beta=2, average='samples')
 
     def train_model(self, x_train, y_train, epoch=5, batch_size=128, validation_split_size=0.2, train_callbacks=()):
@@ -92,9 +92,9 @@ class AmazonKerasClassifier:
 
     def predict(self, x_test):
         predictions = self.classifier.predict(x_test)
-		print('predictions')
-		print(predictions.shape)
-		print(predictions)
+        print('predictions')
+        print(predictions.shape)
+        print(predictions)
         return predictions
 
     def map_predictions(self, predictions, labels_map, thresholds):
