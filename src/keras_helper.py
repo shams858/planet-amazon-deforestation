@@ -29,14 +29,9 @@ class LossHistory(Callback):
 
 
 class AmazonKerasClassifier:
-    def __init__(self, img_size=(32, 32), img_channels=3):
+    def __init__(self):
         self.losses = []
-        base_model = InceptionV3(weights=None, include_top=False, input_shape=(*img_size, img_channels))
-        x = base_model.output
-        x = GlobalAveragePooling2D()(x)
-        x = Dense(1024, activation='relu')(x)
-        predictions = Dense(17, activation='sigmoid')(x)
-        self.classifier = Model(inputs=base_model.input, outputs=predictions)
+        self.classifier = Sequential()
 
     def add_conv_layer(self, img_size=(32, 32), img_channels=3):
         self.classifier.add(BatchNormalization(input_shape=(*img_size, img_channels)))
@@ -49,9 +44,7 @@ class AmazonKerasClassifier:
         self.classifier.add(Conv2D(16, (2, 2), activation='relu'))
         self.classifier.add(MaxPooling2D(pool_size=(2, 2)))
         self.classifier.add(Dropout(0.25))
-		
-    def load_weight(self):
-        self.classifier.load_weights("weights.best.hdf5")
+
 
     def add_flatten_layer(self):
         self.classifier.add(Flatten())
@@ -69,19 +62,30 @@ class AmazonKerasClassifier:
 
     def train_model(self, x_train, y_train, epoch=5, batch_size=128, validation_split_size=0.2, train_callbacks=()):
         history = LossHistory()
+
         X_train, X_valid, y_train, y_valid = train_test_split(x_train, y_train,
                                                               test_size=validation_split_size)
+        adam = Adam(lr=0.01, decay=1e-6)
+        rms = RMSprop(lr=0.0001, decay=1e-6)
         self.classifier.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+        
+        print ('X_train.shape[0]')
+        print(X_train.shape[0])
+        
         checkpointer = ModelCheckpoint(filepath="weights.best.hdf5", verbose=1, save_best_only=True)
         self.classifier.fit(X_train, y_train,
                             batch_size=batch_size,
                             epochs=epoch,
                             verbose=1,
                             validation_data=(X_valid, y_valid),
-                            callbacks=[history, *train_callbacks, checkpointer])        
+                            callbacks=[history, *train_callbacks, checkpointer])
+        
         fbeta_score = self._get_fbeta_score(self.classifier, X_valid, y_valid)
         print(fbeta_score)
         return [history.train_losses, history.val_losses, fbeta_score]
+	
+    def load_weight(self):
+        self.classifier.load_weights("weights.best.hdf5")
 
     def predict(self, x_test):
         predictions = self.classifier.predict(x_test)
