@@ -105,7 +105,7 @@ for i, (image_name, label) in enumerate(zip(images_title, labels_set)):
 
 img_resize = (64, 64) # The resize size of each image
 validation_split_size = 0.2
-epochs = 5
+epochs = 50
 batch_size = 128
 
 
