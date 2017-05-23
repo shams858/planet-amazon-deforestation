@@ -37,7 +37,6 @@ class AmazonKerasClassifier:
         x = Dense(1024, activation='relu')(x)
         predictions = Dense(17, activation='sigmoid')(x)
         self.classifier = Model(inputs=base_model.input, outputs=predictions)
-        return self.classifier
 
     def add_conv_layer(self, img_size=(32, 32), img_channels=3):
         self.classifier.add(BatchNormalization(input_shape=(*img_size, img_channels)))
