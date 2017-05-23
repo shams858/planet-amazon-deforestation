@@ -92,6 +92,9 @@ class AmazonKerasClassifier:
 
     def predict(self, x_test):
         predictions = self.classifier.predict(x_test)
+		print('predictions')
+		print(predictions.shape)
+		print(predictions)
         return predictions
 
     def map_predictions(self, predictions, labels_map, thresholds):
