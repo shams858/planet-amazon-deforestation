@@ -214,7 +214,7 @@ print("Predictions shape: {}\nFiles name shape: {}\n1st predictions entry:\n{}".
 # In[16]:
 
 # For now we'll just put all thresholds to 0.2 
-thresholds = [0.2] * len(labels_set)
+thresholds = [0.265, 0.2225, 0.14, 0.2375,  0.205, 0.2625,  0.245, 0.085, 0.1925, 0.12, 0.1625, 0.19, 0.0875,  0.21,  0.1375,  0.2175, 0.0475]
 print('thresholds')
 print(thresholds)
 
